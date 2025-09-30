@@ -1,2 +1,2 @@
-# GIPPROJECT
-GIP and TUPAD system
+# GIP Project
+This is my updated README file for the GIP project.
