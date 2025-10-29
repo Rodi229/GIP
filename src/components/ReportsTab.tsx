@@ -155,36 +155,36 @@ const ReportsTab: React.FC<ReportsTabProps> = ({ activeProgram }) => {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
               <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">
                 {programName} APPLICANTS BY BARANGAY
               </h3>
-              
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
+
+              <div className="overflow-hidden">
+                <table className="w-full">
                   <thead>
-                    <tr className="border-b-2 border-gray-200">
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">BARANGAY</th>
-                      <th className="text-center py-3 px-4 font-semibold text-gray-700">TOTAL</th>
-                      <th className="text-center py-3 px-4 font-semibold text-gray-700">MALE</th>
-                      <th className="text-center py-3 px-4 font-semibold text-gray-700">FEMALE</th>
-                      <th className="text-center py-3 px-4 font-semibold text-gray-700">PENDING</th>
-                      <th className="text-center py-3 px-4 font-semibold text-gray-700">APPROVED</th>
-                      <th className="text-center py-3 px-4 font-semibold text-gray-700">DEPLOYED</th>
-                      <th className="text-center py-3 px-4 font-semibold text-gray-700">COMPLETED</th>
+                    <tr className="bg-gradient-to-r from-gray-50 to-gray-100">
+                      <th className="text-center py-4 px-6 font-semibold text-gray-800 tracking-wide">BARANGAY</th>
+                      <th className="text-center py-4 px-6 font-semibold text-gray-800 tracking-wide">TOTAL</th>
+                      <th className="text-center py-4 px-6 font-semibold text-gray-800 tracking-wide">MALE</th>
+                      <th className="text-center py-4 px-6 font-semibold text-gray-800 tracking-wide">FEMALE</th>
+                      <th className="text-center py-4 px-6 font-semibold text-gray-800 tracking-wide">PENDING</th>
+                      <th className="text-center py-4 px-6 font-semibold text-gray-800 tracking-wide">APPROVED</th>
+                      <th className="text-center py-4 px-6 font-semibold text-gray-800 tracking-wide">DEPLOYED</th>
+                      <th className="text-center py-4 px-6 font-semibold text-gray-800 tracking-wide">COMPLETED</th>
                     </tr>
                   </thead>
                   <tbody>
                     {currentBarangayEntries.map((barangay, index) => (
-                      <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                        <td className="py-3 px-4 font-medium">{barangay.barangay}</td>
-                        <td className="py-3 px-4 text-center">{barangay.total}</td>
-                        <td className="py-3 px-4 text-center">{barangay.male}</td>
-                        <td className="py-3 px-4 text-center">{barangay.female}</td>
-                        <td className="py-3 px-4 text-center">{barangay.pending}</td>
-                        <td className="py-3 px-4 text-center">{barangay.approved}</td>
-                        <td className="py-3 px-4 text-center">{barangay.deployed}</td>
-                        <td className="py-3 px-4 text-center">{barangay.completed}</td>
+                      <tr key={index} className="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-150">
+                        <td className="py-4 px-6 text-center font-medium text-gray-900">{barangay.barangay}</td>
+                        <td className="py-4 px-6 text-center font-semibold text-blue-600">{barangay.total}</td>
+                        <td className="py-4 px-6 text-center text-gray-700">{barangay.male}</td>
+                        <td className="py-4 px-6 text-center text-gray-700">{barangay.female}</td>
+                        <td className="py-4 px-6 text-center text-gray-700">{barangay.pending}</td>
+                        <td className="py-4 px-6 text-center text-gray-700">{barangay.approved}</td>
+                        <td className="py-4 px-6 text-center text-gray-700">{barangay.deployed}</td>
+                        <td className="py-4 px-6 text-center text-gray-700">{barangay.completed}</td>
                       </tr>
                     ))}
                   </tbody>

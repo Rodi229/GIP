@@ -627,100 +627,100 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
-        <div className={`${headerBgColor} text-white`}>
-          <div className={`grid ${isAdmin ? 'grid-cols-[120px_200px_80px_140px_100px_120px_150px_100px]' : 'grid-cols-[120px_200px_80px_140px_100px_120px_150px]'} gap-4 px-6 py-3 text-sm font-medium min-w-max`}>
-            <div>CODE</div>
-            <div>NAME</div>
-            <div>AGE</div>
-            <div>BARANGAY</div>
-            <div>GENDER</div>
-            <div>STATUS</div>
-            <div>DATE SUBMITTED</div>
-            {isAdmin && <div>ACTIONS</div>}
-          </div>
-        </div>
-
-        {currentEntries.length === 0 ? (
-          <div className="p-3 text-center text-gray-500">
-            <div className="text-lg mb-2">No applicants found.</div>
-          </div>
-        ) : (
-          <div className="divide-y divide-gray-200">
-            {currentEntries.map((applicant) => (
-              <div
-                key={applicant.id}
-                className={`grid ${isAdmin ? 'grid-cols-[120px_200px_80px_140px_100px_120px_150px_100px]' : 'grid-cols-[120px_200px_80px_140px_100px_120px_150px]'} gap-4 px-6 py-4
-                            cursor-pointer transition-all duration-200
-                            hover:bg-red-50 hover:shadow-md hover:scale-[1.01] rounded-lg min-w-max`}
-                onClick={() => setViewingApplicant(applicant)}
-              >
-
-                <div className="font-medium text-sm truncate">{applicant.code}</div>
-                <div className="text-sm truncate">
-                  <span className="text-gray-900 font-medium">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+        <table className="w-full">
+          <thead>
+            <tr className={`${headerBgColor} text-white`}>
+              <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">CODE</th>
+              <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">NAME</th>
+              <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">AGE</th>
+              <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">BARANGAY</th>
+              <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">GENDER</th>
+              <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">STATUS</th>
+              <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">DATE SUBMITTED</th>
+              {isAdmin && <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">ACTIONS</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {currentEntries.length === 0 ? (
+              <tr>
+                <td colSpan={isAdmin ? 8 : 7} className="px-6 py-12 text-center text-gray-500">
+                  <div className="text-lg mb-2">No applicants found.</div>
+                </td>
+              </tr>
+            ) : (
+              currentEntries.map((applicant) => (
+                <tr
+                  key={applicant.id}
+                  className="border-b border-gray-100 cursor-pointer transition-all duration-200 hover:bg-gray-50 hover:shadow-sm"
+                  onClick={() => setViewingApplicant(applicant)}
+                >
+                  <td className="px-6 py-4 text-center text-sm font-medium text-gray-900">{applicant.code}</td>
+                  <td className="px-6 py-4 text-center text-sm font-medium text-gray-900">
                     {`${applicant.firstName} ${applicant.middleName || ''} ${applicant.lastName} ${applicant.extensionName || ''}`.trim()}
-                  </span>
-                </div>
-                <div className="text-sm text-center">{applicant.age}</div>
-                <div className="text-sm truncate">{applicant.barangay}</div>
-                <div className="text-sm text-center">{applicant.gender}</div>
-                <div className="text-sm">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    applicant.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                    applicant.status === 'APPROVED' ? 'bg-blue-100 text-blue-800' :
-                    applicant.status === 'DEPLOYED' ? 'bg-green-100 text-green-800' :
-                    applicant.status === 'COMPLETED' ? 'bg-pink-100 text-pink-800' :
-                    applicant.status === 'REJECTED' ? 'bg-orange-100 text-orange-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
-                    {applicant.status}
-                  </span>
-                </div>
-                <div className="text-sm">{applicant.dateSubmitted}</div>
-                {isAdmin && (
-                  <div className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
-                    {showArchived ? (
-                      <>
-                        <button
-                          onClick={() => handleUnarchive(applicant.id, `${applicant.firstName} ${applicant.lastName}`, getFilteredApplicants, updateApplicant, refreshData)}
-                          className="p-1.5 text-green-600 hover:text-green-800 hover:bg-green-50 rounded-md transition-colors duration-200"
-                          title="Restore applicant"
-                        >
-                          <ArchiveRestore className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(applicant.id, `${applicant.firstName} ${applicant.lastName}`, deleteApplicant)}
-                          className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors duration-200"
-                          title="Delete permanently"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <button
-                          onClick={(e) => { e.stopPropagation(); openEditModal(applicant); }}
-                          className="p-1.5 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-md transition-colors duration-200"
-                          title="Edit applicant"
-                        >
-                          <Edit className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={(e) => { e.stopPropagation(); handleArchive(applicant.id, `${applicant.firstName} ${applicant.lastName}`, getFilteredApplicants, updateApplicant, refreshData); }}
-                          className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors duration-200"
-                          title="Delete (Archive)"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+                  </td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-700">{applicant.age}</td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-700">{applicant.barangay}</td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-700">{applicant.gender}</td>
+                  <td className="px-6 py-4 text-center">
+                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
+                      applicant.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                      applicant.status === 'APPROVED' ? 'bg-blue-100 text-blue-800' :
+                      applicant.status === 'DEPLOYED' ? 'bg-green-100 text-green-800' :
+                      applicant.status === 'COMPLETED' ? 'bg-pink-100 text-pink-800' :
+                      applicant.status === 'REJECTED' ? 'bg-orange-100 text-orange-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {applicant.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-center text-sm text-gray-700">{applicant.dateSubmitted}</td>
+                  {isAdmin && (
+                    <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-center space-x-2">
+                        {showArchived ? (
+                          <>
+                            <button
+                              onClick={() => handleUnarchive(applicant.id, `${applicant.firstName} ${applicant.lastName}`, getFilteredApplicants, updateApplicant, refreshData)}
+                              className="p-2 text-green-600 hover:text-green-800 hover:bg-green-50 rounded-lg transition-colors duration-200"
+                              title="Restore applicant"
+                            >
+                              <ArchiveRestore className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(applicant.id, `${applicant.firstName} ${applicant.lastName}`, deleteApplicant)}
+                              className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                              title="Delete permanently"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); openEditModal(applicant); }}
+                              className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+                              title="Edit applicant"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); handleArchive(applicant.id, `${applicant.firstName} ${applicant.lastName}`, getFilteredApplicants, updateApplicant, refreshData); }}
+                              className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                              title="Delete (Archive)"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </td>
+                  )}
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
 
       {totalPages > 1 && (
