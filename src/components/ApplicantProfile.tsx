@@ -9,6 +9,7 @@ interface ApplicantProfileProps {
 }
 
 const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose }) => {
+  const [showImageModal, setShowImageModal] = React.useState(false);
   const handleExportToExcel = () => {
     const workbook = XLSX.utils.book_new();
 
@@ -114,7 +115,10 @@ const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose 
               
               {applicant.photoFileData && (
                 <div className="ml-4 flex flex-col items-center">
-                  <div className="border-4 border-gray-800 rounded-lg overflow-hidden shadow-lg">
+                  <div
+                    className="border-4 border-gray-800 rounded-lg overflow-hidden shadow-lg cursor-pointer hover:opacity-80 transition"
+                    onClick={() => setShowImageModal(true)}
+                  >
                     <img
                       src={applicant.photoFileData}
                       alt="Applicant Photo"
@@ -272,6 +276,28 @@ const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose 
           </div>
         </div>
       </div>
+
+      {showImageModal && applicant.photoFileData && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[60]"
+          onClick={() => setShowImageModal(false)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] p-4">
+            <button
+              onClick={() => setShowImageModal(false)}
+              className="absolute top-6 right-6 bg-white rounded-full p-2 hover:bg-gray-100 transition z-10"
+            >
+              <X className="w-6 h-6 text-gray-800" />
+            </button>
+            <img
+              src={applicant.photoFileData}
+              alt="Preview"
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

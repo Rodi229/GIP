@@ -658,7 +658,7 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
 
                 <div className="font-medium text-sm">{applicant.code}</div>
                 <div className="text-sm">
-                  <span className="text-blue-600 font-medium">
+                  <span className="text-gray-900 font-medium">
                     {`${applicant.firstName} ${applicant.middleName || ''} ${applicant.lastName} ${applicant.extensionName || ''}`.trim()}
                   </span>
                 </div>

@@ -38,6 +38,8 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
 }) => {
   const [customCourse, setCustomCourse] = useState('');
   const [showCustomCourse, setShowCustomCourse] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   if (!showModal) return null;
 
@@ -146,7 +148,12 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
                       <img
                         src={formData.photoFileData || editingApplicant?.photoFileData}
                         alt="Preview"
-                        className="w-8 h-8 object-cover rounded border"
+                        className="w-8 h-8 object-cover rounded border cursor-pointer hover:opacity-80 transition"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setSelectedImage(formData.photoFileData || editingApplicant?.photoFileData || null);
+                          setShowImageModal(true);
+                        }}
                       />
                     )}
                   </div>
@@ -663,6 +670,28 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
           </div>
         </form>
       </div>
+
+      {showImageModal && selectedImage && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[60]"
+          onClick={() => setShowImageModal(false)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] p-4">
+            <button
+              onClick={() => setShowImageModal(false)}
+              className="absolute top-6 right-6 bg-white rounded-full p-2 hover:bg-gray-100 transition z-10"
+            >
+              <X className="w-6 h-6 text-gray-800" />
+            </button>
+            <img
+              src={selectedImage}
+              alt="Preview"
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
