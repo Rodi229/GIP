@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { AuthState, login as authLogin, logout as authLogout, getAuthState, refreshSession } from '../utils/auth';
 
 export const useAuth = () => {
   const [authState, setAuthState] = useState<AuthState>(() => getAuthState());
   const [isLoading, setIsLoading] = useState(false);
+  const isInitialMount = useRef(true);
 
   // Check auth state on mount and set up session refresh
   useEffect(() => {
@@ -12,12 +13,15 @@ export const useAuth = () => {
       setAuthState(currentState);
     };
 
-    // Check immediately
-    checkAuthState();
+    // Only check on storage changes, not on initial mount
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    }
 
     // Set up periodic session refresh (every 30 minutes)
     const refreshInterval = setInterval(() => {
-      if (authState.isAuthenticated) {
+      const currentState = getAuthState();
+      if (currentState.isAuthenticated) {
         const refreshed = refreshSession();
         if (!refreshed) {
           // Session expired, force logout
@@ -39,7 +43,7 @@ export const useAuth = () => {
       clearInterval(refreshInterval);
       window.removeEventListener('storage', handleStorageChange);
     };
-  }, [authState.isAuthenticated]);
+  }, []);
 
   const handleLogin = useCallback(async (username: string, password: string): Promise<boolean> => {
     setIsLoading(true);
