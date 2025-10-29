@@ -629,7 +629,7 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         <div className={`${headerBgColor} text-white`}>
-          <div className={`grid ${isAdmin ? 'grid-cols-[100px_minmax(200px,1fr)_60px_140px_80px_120px_140px_100px]' : 'grid-cols-[100px_minmax(200px,1fr)_60px_140px_80px_120px_140px]'} gap-4 px-6 py-3 text-sm font-medium`}>
+          <div className={`grid ${isAdmin ? 'grid-cols-[120px_200px_80px_140px_100px_120px_150px_100px]' : 'grid-cols-[120px_200px_80px_140px_100px_120px_150px]'} gap-4 px-6 py-3 text-sm font-medium`}>
             <div>CODE</div>
             <div>NAME</div>
             <div>AGE</div>
@@ -650,20 +650,20 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
             {currentEntries.map((applicant) => (
               <div
                 key={applicant.id}
-                className={`grid ${isAdmin ? 'grid-cols-[100px_minmax(200px,1fr)_60px_140px_80px_120px_140px_100px]' : 'grid-cols-[100px_minmax(200px,1fr)_60px_140px_80px_120px_140px]'} gap-4 px-6 py-4
+                className={`grid ${isAdmin ? 'grid-cols-[120px_200px_80px_140px_100px_120px_150px_100px]' : 'grid-cols-[120px_200px_80px_140px_100px_120px_150px]'} gap-4 px-6 py-4
                             cursor-pointer transition-all duration-200
                             hover:bg-red-50 hover:shadow-md hover:scale-[1.01] rounded-lg`}
                 onClick={() => setViewingApplicant(applicant)}
               >
 
-                <div className="font-medium text-sm break-words">{applicant.code}</div>
-                <div className="text-sm break-words">
+                <div className="font-medium text-sm truncate">{applicant.code}</div>
+                <div className="text-sm truncate">
                   <span className="text-gray-900 font-medium">
                     {`${applicant.firstName} ${applicant.middleName || ''} ${applicant.lastName} ${applicant.extensionName || ''}`.trim()}
                   </span>
                 </div>
                 <div className="text-sm text-center">{applicant.age}</div>
-                <div className="text-sm break-words">{applicant.barangay}</div>
+                <div className="text-sm truncate">{applicant.barangay}</div>
                 <div className="text-sm text-center">{applicant.gender}</div>
                 <div className="text-sm">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
