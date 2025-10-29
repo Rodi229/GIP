@@ -25,6 +25,14 @@ const downloadResume = (fileName: string, fileData: string) => {
   document.body.removeChild(link);
 };
 
+const truncateFileName = (fileName: string, maxLength: number = 15) => {
+  if (fileName.length <= maxLength) return fileName;
+  const extension = fileName.split('.').pop();
+  const nameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+  const truncatedName = nameWithoutExtension.substring(0, maxLength - 3 - (extension?.length || 0));
+  return `${truncatedName}...${extension}`;
+};
+
 const ApplicantForm: React.FC<ApplicantFormProps> = ({
   showModal,
   editingApplicant,
@@ -141,8 +149,18 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
                 </label>
                 {(formData.photoFileName || editingApplicant?.photoFileName) ? (
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-green-600 font-medium">
-                      {formData.photoFileName || editingApplicant?.photoFileName}
+                    <span
+                      className="text-sm text-green-600 font-medium cursor-pointer hover:text-green-700 hover:underline"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (formData.photoFileData || editingApplicant?.photoFileData) {
+                          setSelectedImage(formData.photoFileData || editingApplicant?.photoFileData || null);
+                          setShowImageModal(true);
+                        }
+                      }}
+                      title={formData.photoFileName || editingApplicant?.photoFileName}
+                    >
+                      {truncateFileName(formData.photoFileName || editingApplicant?.photoFileName || '')}
                     </span>
                     {(formData.photoFileData || editingApplicant?.photoFileData) && (
                       <img
