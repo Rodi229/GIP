@@ -627,9 +627,9 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
         <div className={`${headerBgColor} text-white`}>
-          <div className={`grid ${isAdmin ? 'grid-cols-[120px_200px_80px_140px_100px_120px_150px_100px]' : 'grid-cols-[120px_200px_80px_140px_100px_120px_150px]'} gap-4 px-6 py-3 text-sm font-medium`}>
+          <div className={`grid ${isAdmin ? 'grid-cols-[120px_200px_80px_140px_100px_120px_150px_100px]' : 'grid-cols-[120px_200px_80px_140px_100px_120px_150px]'} gap-4 px-6 py-3 text-sm font-medium min-w-max`}>
             <div>CODE</div>
             <div>NAME</div>
             <div>AGE</div>
@@ -652,7 +652,7 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
                 key={applicant.id}
                 className={`grid ${isAdmin ? 'grid-cols-[120px_200px_80px_140px_100px_120px_150px_100px]' : 'grid-cols-[120px_200px_80px_140px_100px_120px_150px]'} gap-4 px-6 py-4
                             cursor-pointer transition-all duration-200
-                            hover:bg-red-50 hover:shadow-md hover:scale-[1.01] rounded-lg`}
+                            hover:bg-red-50 hover:shadow-md hover:scale-[1.01] rounded-lg min-w-max`}
                 onClick={() => setViewingApplicant(applicant)}
               >
 
