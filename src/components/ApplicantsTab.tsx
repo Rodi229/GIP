@@ -453,7 +453,7 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{programName} APPLICANTS{showArchived ? ' - ARCHIVE' : ''}</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{programName} APPLICANTS{showArchived ? ' - ARCHIVED' : ''}</h1>
         </div>
         <div className="flex items-center space-x-3">
           {isAdmin && (
@@ -644,7 +644,7 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
           <tbody>
             {currentEntries.length === 0 ? (
               <tr>
-                <td colSpan={isAdmin ? 8 : 7} className="px-6 py-12 text-center text-gray-500">
+                <td colSpan={isAdmin ? 8 : 7} className="px-6 py-2 text-center text-gray-500">
                   <div className="text-lg mb-2">No applicants found.</div>
                 </td>
               </tr>
