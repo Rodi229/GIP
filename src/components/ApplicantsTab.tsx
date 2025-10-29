@@ -627,18 +627,18 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <table className="w-full">
           <thead>
             <tr className={`${headerBgColor} text-white`}>
-              <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">CODE</th>
+              <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide first:rounded-tl-xl last:rounded-tr-xl">CODE</th>
               <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">NAME</th>
               <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">AGE</th>
               <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">BARANGAY</th>
               <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">GENDER</th>
               <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">STATUS</th>
               <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">DATE SUBMITTED</th>
-              {isAdmin && <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide">ACTIONS</th>}
+              {isAdmin && <th className="px-6 py-4 text-center text-sm font-semibold tracking-wide last:rounded-tr-xl">ACTIONS</th>}
             </tr>
           </thead>
           <tbody>
@@ -652,16 +652,26 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
               currentEntries.map((applicant) => (
                 <tr
                   key={applicant.id}
-                  className="border-b border-gray-100 cursor-pointer transition-all duration-200 hover:bg-gray-50 hover:shadow-sm"
+                  className="border-b border-gray-100 cursor-pointer transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:shadow-md hover:scale-[1.01] hover:border-blue-200"
                   onClick={() => setViewingApplicant(applicant)}
                 >
-                  <td className="px-6 py-4 text-center text-sm font-medium text-gray-900">{applicant.code}</td>
-                  <td className="px-6 py-4 text-center text-sm font-medium text-gray-900">
-                    {`${applicant.firstName} ${applicant.middleName || ''} ${applicant.lastName} ${applicant.extensionName || ''}`.trim()}
+                  <td className="px-6 py-4 text-center text-sm font-bold text-gray-900">
+                    <div className="truncate" title={applicant.code}>{applicant.code}</div>
                   </td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-700">{applicant.age}</td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-700">{applicant.barangay}</td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-700">{applicant.gender}</td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-gray-900">
+                    <div className="truncate max-w-[200px] mx-auto" title={`${applicant.firstName} ${applicant.middleName || ''} ${applicant.lastName} ${applicant.extensionName || ''}`.trim()}>
+                      {`${applicant.firstName} ${applicant.middleName || ''} ${applicant.lastName} ${applicant.extensionName || ''}`.trim()}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-gray-900">
+                    <div className="truncate" title={applicant.age.toString()}>{applicant.age}</div>
+                  </td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-gray-900">
+                    <div className="truncate max-w-[140px] mx-auto" title={applicant.barangay}>{applicant.barangay}</div>
+                  </td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-gray-900">
+                    <div className="truncate" title={applicant.gender}>{applicant.gender}</div>
+                  </td>
                   <td className="px-6 py-4 text-center">
                     <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
                       applicant.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
@@ -674,7 +684,9 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
                       {applicant.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-center text-sm text-gray-700">{applicant.dateSubmitted}</td>
+                  <td className="px-6 py-4 text-center text-sm font-bold text-gray-900">
+                    <div className="truncate" title={applicant.dateSubmitted}>{applicant.dateSubmitted}</div>
+                  </td>
                   {isAdmin && (
                     <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center justify-center space-x-2">
