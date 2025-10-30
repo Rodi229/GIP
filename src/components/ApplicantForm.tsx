@@ -305,11 +305,11 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-bold mb-1 uppercase">Gender *</label>
+            <label className="block text-sm font-bold mb-2 uppercase">Gender *</label>
             <select
               value={formData.gender}
               onChange={(e) => onInputChange('gender', e.target.value)}
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-lg px-3 py-3"
             >
               <option value="MALE">MALE</option>
               <option value="FEMALE">FEMALE</option>
@@ -332,12 +332,12 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
           )}
 
           <div>
-            <label className="block text-sm font-bold mb-1 uppercase">Barangay *</label>
+            <label className="block text-sm font-bold mb-2 uppercase">Barangay *</label>
             <select
               value={formData.barangay}
               onChange={(e) => onInputChange('barangay', e.target.value)}
               required
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-lg px-3 py-3"
             >
               <option value="">SELECT BARANGAY</option>
               <option>APLAYA</option>
@@ -427,12 +427,12 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
 
           {activeProgram === 'GIP' && (
             <div>
-              <label className="block text-sm font-bold mb-1 uppercase">Civil Status *</label>
+              <label className="block text-sm font-bold mb-2 uppercase">Civil Status *</label>
               <select
                 value={formData.civilStats || ''}
                 onChange={(e) => onInputChange('civilStats', e.target.value)}
                 required
-                className="w-full border rounded-lg px-3 py-2"
+                className="w-full border rounded-lg px-3 py-3"
               >
                 <option value="">SELECT CIVIL STATUS</option>
                 <option>SINGLE</option>
@@ -460,12 +460,12 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
           {activeProgram === 'TUPAD' && (
             <>
               <div>
-                <label className="block text-sm font-bold mb-1 uppercase">Type of ID Submitted *</label>
+                <label className="block text-sm font-bold mb-2 uppercase">Type of ID Submitted *</label>
                 <select
                   value={formData.idType}
                   onChange={(e) => onInputChange('idType', e.target.value)}
                   required
-                  className="w-full border rounded-lg px-3 py-2"
+                  className="w-full border rounded-lg px-3 py-3"
                 >
                   <option value="">SELECT ID TYPE</option>
                   <option>PHILSYS ID</option>
@@ -504,11 +504,11 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
               </div>
 
               <div>
-                <label className="block text-sm font-bold mb-1 uppercase">Civil Status</label>
+                <label className="block text-sm font-bold mb-2 uppercase">Civil Status</label>
                 <select
                   value={formData.civilStatus}
                   onChange={(e) => onInputChange('civilStatus', e.target.value)}
-                  className="w-full border rounded-lg px-3 py-2"
+                  className="w-full border rounded-lg px-3 py-3"
                 >
                   <option value="">SELECT CIVIL STATUS</option>
                   <option>SINGLE</option>
@@ -557,7 +557,7 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
           {activeProgram === 'GIP' && (
             <>
               <div>
-                <label className="block text-sm font-bold mb-1 uppercase">Educational Attainment *</label>
+                <label className="block text-sm font-bold mb-2 uppercase">Educational Attainment *</label>
                 <select
                   value={formData.educationalAttainment}
                   onChange={(e) => {
@@ -567,7 +567,7 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
                     setShowCustomCourse(false);
                   }}
                   required
-                  className="w-full border rounded-lg px-3 py-2"
+                  className="w-full border rounded-lg px-3 py-3"
                 >
                   <option value="">Select</option>
                   <option>JUNIOR HIGH SCHOOL GRADUATE</option>
@@ -582,7 +582,7 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
 
               {isCourseFieldActive && (
               <div>
-                <label className="block text-sm font-bold mb-1 uppercase">
+                <label className="block text-sm font-bold mb-2 uppercase">
                   Course *
                 </label>
 
@@ -598,7 +598,7 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
                       }
                     }}
                     required
-                    className="w-full border rounded-lg px-3 py-2"
+                    className="w-full border rounded-lg px-3 py-3"
                   >
                     <option value="">SELECT COURSE</option>
                     <option value="OTHER">OTHER (Type manually)</option>
@@ -645,11 +645,11 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
           )}
 
           <div>
-            <label className="block text-sm font-bold mb-1 uppercase">Status</label>
+            <label className="block text-sm font-bold mb-2 uppercase">Status</label>
             <select
               value={formData.status}
               onChange={(e) => onInputChange('status', e.target.value)}
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-lg px-3 py-3"
             >
               <option value="PENDING">PENDING</option>
               <option value="APPROVED">APPROVED</option>
