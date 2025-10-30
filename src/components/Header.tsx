@@ -15,8 +15,6 @@ const Header: React.FC<HeaderProps> = ({ activeProgram, onProgramChange, user, o
   };
 
   const headerColor = activeProgram === 'GIP' ? 'bg-red-700' : 'bg-green-700';
-
-  // 👇 Replace these with your actual logo paths
   const gipLogo = '/src/assets/GIPLogo.png';
   const tupadLogo = '/src/assets/TupadLogo.png';
 
@@ -26,18 +24,14 @@ const Header: React.FC<HeaderProps> = ({ activeProgram, onProgramChange, user, o
     <header className={`${headerColor} text-white border-b-4 border-yellow-400`}>
       <div className="max-w-7xl mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          {/* Left side - Logo and Title */}
           <div className="flex items-center space-x-4">
-            {/* Only the logo, no background */}
-           <div className="flex items-center justify-center w-12 h-12">
+            <div className="flex items-center justify-center w-12 h-12">
             <img
               src={logoSrc}
               alt={`${activeProgram} logo`}
               className="w-full h-full object-contain scale-125 transition-transform duration-300"
             />
-          </div>
-
-
+            </div>
             <div>
               <h1 className="text-xl font-bold">SOFT PROJECTS MANAGEMENT SYSTEM</h1>
               <p className="text-sm opacity-90">
@@ -45,10 +39,7 @@ const Header: React.FC<HeaderProps> = ({ activeProgram, onProgramChange, user, o
               </p>
             </div>
           </div>
-
-          {/* Right side - Toggle and User Info */}
           <div className="flex items-center space-x-6">
-            {/* Toggle Switch */}
             <div className="flex items-center space-x-3 bg-black bg-opacity-20 px-4 py-2 rounded-lg">
               <button
                 onClick={toggleProgram}
@@ -60,7 +51,6 @@ const Header: React.FC<HeaderProps> = ({ activeProgram, onProgramChange, user, o
               >
                 GIP
               </button>
-
               <div className="relative">
                 <button
                   onClick={toggleProgram}
@@ -95,7 +85,6 @@ const Header: React.FC<HeaderProps> = ({ activeProgram, onProgramChange, user, o
                 TUPAD
               </button>
             </div>
-
             {/* User Info */}
             <div className="flex items-center space-x-3">
               <div className="text-right">
