@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { User, Lock, Eye, EyeOff } from 'lucide-react';
-import SantaRosaLogo from "../assets/SantaRosa.png";
-import SantaRosaArch from "../assets/SantaRosaArch.png";
+import GIPLogo from "../assets/GIPLogo.png";
 
 interface LoginPageProps {
   onLogin: (username: string, password: string) => Promise<boolean>;
@@ -77,23 +76,15 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center p-4 bg-cover bg-center relative"
-      style={{
-        backgroundImage: `url(${SantaRosaArch})`
-      }}
-    >
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-red-600 to-orange-700 opacity-80"></div>
-
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-red-600 to-orange-700">
       {/* Content */}
       <div className="relative w-full max-w-md z-10">
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4">
               <img
-                src={SantaRosaLogo}
-                alt="Santa Rosa Logo"
+                src={GIPLogo}
+                alt="Logo"
                 className="w-15 h-15 object-contain"
               />
             </div>

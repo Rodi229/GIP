@@ -1,6 +1,6 @@
 import React from 'react';
 import ProtectedRoute from './components/ProtectedRoute';
-import { useAuth } from './hooks/useAuth';
+import { useAuthContext } from './contexts/AuthContext';
 import Header from './components/Header';
 import Navigation from './components/Navigation';
 import DashboardTab from './components/DashboardTab';
@@ -8,7 +8,7 @@ import ApplicantsTab from './components/ApplicantsTab';
 import ReportsTab from './components/ReportsTab';
 
 function App() {
-  const { logout, user } = useAuth();
+  const { logout, user } = useAuthContext();
   const [activeTab, setActiveTab] = React.useState('dashboard');
   const [activeProgram, setActiveProgram] = React.useState<'GIP' | 'TUPAD'>('GIP');
 
