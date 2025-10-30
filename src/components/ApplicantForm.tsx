@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
 import { Applicant, calculateAge } from "../utils/dataService.ts";
-import { COLLEGE_COURSES, TECHNICAL_VOCATIONAL_COURSES } from "../utils/courses.ts";
+import { COLLEGE_COURSES, TECHNICAL_VOCATIONAL_COURSES, ALS_SECONDARY_COURSES, COLLEGE_UNDERGRADUATE_COURSES } from "../utils/courses.ts";
 import Swal from "sweetalert2";
 
 interface ApplicantFormProps {
@@ -56,11 +56,26 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
   const programName = activeProgram === 'GIP' ? 'GIP' : 'TUPAD';
 
   const isCourseFieldActive = formData.educationalAttainment === 'COLLEGE GRADUATE' ||
-    formData.educationalAttainment === 'TECHNICAL/VOCATIONAL COURSE GRADUATE';
+    formData.educationalAttainment === 'TECHNICAL/VOCATIONAL COURSE GRADUATE' ||
+    formData.educationalAttainment === 'ALS SECONDARY GRADUATE' ||
+    formData.educationalAttainment === 'COLLEGE UNDERGRADUATE';
 
-  const courseOptions = formData.educationalAttainment === 'COLLEGE GRADUATE'
-    ? COLLEGE_COURSES
-    : TECHNICAL_VOCATIONAL_COURSES;
+  const getCourseOptions = () => {
+    switch (formData.educationalAttainment) {
+      case 'COLLEGE GRADUATE':
+        return COLLEGE_COURSES;
+      case 'TECHNICAL/VOCATIONAL COURSE GRADUATE':
+        return TECHNICAL_VOCATIONAL_COURSES;
+      case 'ALS SECONDARY GRADUATE':
+        return ALS_SECONDARY_COURSES;
+      case 'COLLEGE UNDERGRADUATE':
+        return COLLEGE_UNDERGRADUATE_COURSES;
+      default:
+        return [];
+    }
+  };
+
+  const courseOptions = getCourseOptions();
 
   const handleCancel = async () => {
     const hasData = Object.values(formData).some(val => val !== '' && val !== null);
@@ -148,33 +163,19 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
                   />
                 </label>
                 {(formData.photoFileName || editingApplicant?.photoFileName) ? (
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="text-sm text-green-600 font-medium cursor-pointer hover:text-green-700 hover:underline"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (formData.photoFileData || editingApplicant?.photoFileData) {
-                          setSelectedImage(formData.photoFileData || editingApplicant?.photoFileData || null);
-                          setShowImageModal(true);
-                        }
-                      }}
-                      title={formData.photoFileName || editingApplicant?.photoFileName}
-                    >
-                      {truncateFileName(formData.photoFileName || editingApplicant?.photoFileName || '')}
-                    </span>
-                    {(formData.photoFileData || editingApplicant?.photoFileData) && (
-                      <img
-                        src={formData.photoFileData || editingApplicant?.photoFileData}
-                        alt="Preview"
-                        className="w-8 h-8 object-cover rounded border cursor-pointer hover:opacity-80 transition"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setSelectedImage(formData.photoFileData || editingApplicant?.photoFileData || null);
-                          setShowImageModal(true);
-                        }}
-                      />
-                    )}
-                  </div>
+                  <span
+                    className="text-sm text-green-600 font-medium cursor-pointer hover:text-green-700 hover:underline"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (formData.photoFileData || editingApplicant?.photoFileData) {
+                        setSelectedImage(formData.photoFileData || editingApplicant?.photoFileData || null);
+                        setShowImageModal(true);
+                      }
+                    }}
+                    title={formData.photoFileName || editingApplicant?.photoFileName}
+                  >
+                    {truncateFileName(formData.photoFileName || editingApplicant?.photoFileName || '')}
+                  </span>
                 ) : (
                   <span className="text-gray-500 text-sm">No file chosen</span>
                 )}
@@ -582,7 +583,7 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
               {isCourseFieldActive && (
               <div>
                 <label className="block text-sm font-bold mb-1 uppercase">
-                  Course * {formData.educationalAttainment === 'COLLEGE GRADUATE' ? '(College)' : '(Technical/Vocational)'}
+                  Course *
                 </label>
 
                 {!showCustomCourse ? (
