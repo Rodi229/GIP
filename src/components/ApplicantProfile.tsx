@@ -143,15 +143,15 @@ const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose 
                 <div className="grid grid-cols-3 gap-4 bg-white p-4 rounded border-2 border-gray-400 shadow-sm">
                   <div>
                     <p className="text-xs text-gray-600 font-semibold mb-1">Family Name</p>
-                    <p className="font-bold text-gray-900">{applicant.lastName}</p>
+                    <p className="font-bold text-gray-900">{applicant.lastName.toUpperCase()}</p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-600 font-semibold mb-1">First Name</p>
-                    <p className="font-bold text-gray-900">{applicant.firstName}</p>
+                    <p className="font-bold text-gray-900">{applicant.firstName.toUpperCase()}</p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-600 font-semibold mb-1">Middle Name</p>
-                    <p className="font-bold text-gray-900">{applicant.middleName || '-'}</p>
+                    <p className="font-bold text-gray-900">{applicant.middleName ? applicant.middleName.toUpperCase() : '-'}</p>
                   </div>
                 </div>
               </div>
@@ -159,7 +159,7 @@ const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose 
               <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-300">
                 <p className="font-semibold text-sm mb-3 text-gray-800">2. RESIDENTIAL ADDRESS:</p>
                 <div className="bg-white p-4 rounded border-2 border-gray-400 shadow-sm">
-                  <p className="font-medium text-gray-900 mb-3">{applicant.barangay}</p>
+                  <p className="font-medium text-gray-900 mb-3">{applicant.barangay.toUpperCase()}</p>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-xs text-gray-600 font-semibold mb-1">Telephone No.:</p>
@@ -172,7 +172,7 @@ const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose 
                   </div>
                   <div className="mt-3">
                     <p className="text-xs text-gray-600 font-semibold mb-1">E-mail Address:</p>
-                    <p className="font-medium text-gray-900">{applicant.email || '-'}</p>
+                    <p className="font-medium text-gray-900">{(applicant.email || '-').toLowerCase()}</p>
                   </div>
                 </div>
               </div>
@@ -180,7 +180,7 @@ const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose 
               <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-300">
                 <p className="font-semibold text-sm mb-3 text-gray-800">3. PLACE OF BIRTH (city/province)</p>
                 <div className="bg-white p-4 rounded border-2 border-gray-400 shadow-sm">
-                  <p className="font-medium text-gray-900">{applicant.placeOfBirth || '-'}</p>
+                  <p className="font-medium text-gray-900">{applicant.placeOfBirth ? applicant.placeOfBirth.toUpperCase() : '-'}</p>
                 </div>
               </div>
 
@@ -194,14 +194,14 @@ const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose 
               <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-300">
                 <p className="font-semibold text-sm mb-3 text-gray-800">5. GENDER</p>
                 <div className="bg-white p-4 rounded border-2 border-gray-400 shadow-sm">
-                  <p className="font-medium text-gray-900">{applicant.gender === 'MALE' ? 'Male' : 'Female'}</p>
+                  <p className="font-medium text-gray-900">{applicant.gender === 'MALE' ? 'MALE' : 'FEMALE'}</p>
                 </div>
               </div>
 
               <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-300">
                 <p className="font-semibold text-sm mb-3 text-gray-800">6. CIVIL STATUS</p>
                 <div className="bg-white p-4 rounded border-2 border-gray-400 shadow-sm">
-                  <p className="font-medium text-gray-900">{applicant.civilStats || '-'}</p>
+                  <p className="font-medium text-gray-900">{applicant.civilStats ? applicant.civilStats.toUpperCase() : '-'}</p>
                 </div>
               </div>
 
@@ -215,11 +215,11 @@ const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose 
                     <div>COURSE</div>
                   </div>
                   <div className="grid grid-cols-5 gap-4 p-4 border-b border-gray-300">
-                    <div className="font-medium text-gray-900">{applicant.school || '-'}</div>
+                    <div className="font-medium text-gray-900">{applicant.school ? applicant.school.toUpperCase() : '-'}</div>
                     <div className="text-center text-xs text-gray-600">From: -</div>
                     <div className="text-center text-xs text-gray-600">To: -</div>
-                    <div className="font-medium text-gray-900">{applicant.educationalAttainment}</div>
-                    <div className="font-medium text-gray-900">{applicant.course || '-'}</div>
+                    <div className="font-medium text-gray-900">{applicant.educationalAttainment.toUpperCase()}</div>
+                    <div className="font-medium text-gray-900">{applicant.course ? applicant.course.toUpperCase() : '-'}</div>
                   </div>
                 </div>
               </div>
@@ -270,8 +270,8 @@ const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose 
             </div>
 
             <div className="mt-8 p-4 bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg text-right text-xs text-gray-700 border-2 border-gray-300">
-              <p className="font-semibold">Application Code: <span className="text-red-700">{applicant.code}</span></p>
-              <p className="font-semibold">Status: <span className="text-blue-700">{applicant.status}</span></p>
+              <p className="font-semibold">Application Code: <span className="text-red-700">{applicant.code.toUpperCase()}</span></p>
+              <p className="font-semibold">Status: <span className="text-blue-700">{applicant.status.toUpperCase()}</span></p>
             </div>
           </div>
         </div>
