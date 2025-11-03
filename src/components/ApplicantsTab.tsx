@@ -59,7 +59,10 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
     averageMonthlyIncome: '',
     dependentName: '',
     relationshipToDependent: '',
-    resumeFile: null as File | null
+    resumeFile: null as File | null,
+    photoFile: null as File | null,
+    photoFileName: '',
+    photoFileData: ''
   });
 
   const generateApplicantCode = () => {
@@ -117,7 +120,10 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
       averageMonthlyIncome: applicant.averageMonthlyIncome || '',
       dependentName: applicant.dependentName || '',
       relationshipToDependent: applicant.relationshipToDependent || '',
-      resumeFile: null
+      resumeFile: null,
+      photoFile: null,
+      photoFileName: '',
+      photoFileData: ''
     });
     setShowModal(true);
   };
@@ -152,7 +158,10 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
       averageMonthlyIncome: '',
       dependentName: '',
       relationshipToDependent: '',
-      resumeFile: null
+      resumeFile: null,
+      photoFile: null,
+      photoFileName: '',
+      photoFileData: ''
     });
   };
 
@@ -248,10 +257,20 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
       if (editingApplicant) {
         let resumeFileName = editingApplicant.resumeFileName;
         let resumeFileData = editingApplicant.resumeFileData;
+        let photoFileName = editingApplicant.photoFileName;
+        let photoFileData = editingApplicant.photoFileData;
 
         if (formData.resumeFile) {
           resumeFileName = formData.resumeFile.name;
           resumeFileData = await fileToBase64(formData.resumeFile);
+        }
+
+        if (formData.photoFile) {
+          photoFileName = formData.photoFile.name;
+          photoFileData = await fileToBase64(formData.photoFile);
+        } else if (formData.photoFileName && formData.photoFileData) {
+          photoFileName = formData.photoFileName;
+          photoFileData = formData.photoFileData;
         }
 
         const updatedApplicant: Applicant = {
@@ -278,6 +297,8 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
           program: activeProgram,
           resumeFileName,
           resumeFileData,
+          photoFileName,
+          photoFileData,
           idType: activeProgram === 'TUPAD' ? formData.idType : undefined,
           idNumber: activeProgram === 'TUPAD' ? formData.idNumber : undefined,
           occupation: activeProgram === 'TUPAD' ? formData.occupation : undefined,
@@ -302,10 +323,20 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
       } else {
         let resumeFileName: string | undefined;
         let resumeFileData: string | undefined;
+        let photoFileName: string | undefined;
+        let photoFileData: string | undefined;
 
         if (formData.resumeFile) {
           resumeFileName = formData.resumeFile.name;
           resumeFileData = await fileToBase64(formData.resumeFile);
+        }
+
+        if (formData.photoFile) {
+          photoFileName = formData.photoFile.name;
+          photoFileData = await fileToBase64(formData.photoFile);
+        } else if (formData.photoFileName && formData.photoFileData) {
+          photoFileName = formData.photoFileName;
+          photoFileData = formData.photoFileData;
         }
 
         const applicantData: Omit<Applicant, 'id' | 'dateSubmitted'> = {
@@ -332,6 +363,8 @@ const ApplicantsTab: React.FC<ApplicantsTabProps> = ({ activeProgram }) => {
           program: activeProgram,
           resumeFileName,
           resumeFileData,
+          photoFileName,
+          photoFileData,
           idType: activeProgram === 'TUPAD' ? formData.idType : undefined,
           idNumber: activeProgram === 'TUPAD' ? formData.idNumber : undefined,
           occupation: activeProgram === 'TUPAD' ? formData.occupation : undefined,
