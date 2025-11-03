@@ -27,9 +27,24 @@ const defaultStats: Statistics = {
   completed: 0,
   rejected: 0,
   resigned: 0,
+  interviewed: 0,
   barangaysCovered: 0,
   maleCount: 0,
-  femaleCount: 0
+  femaleCount: 0,
+  pendingMale: 0,
+  pendingFemale: 0,
+  approvedMale: 0,
+  approvedFemale: 0,
+  deployedMale: 0,
+  deployedFemale: 0,
+  completedMale: 0,
+  completedFemale: 0,
+  rejectedMale: 0,
+  rejectedFemale: 0,
+  resignedMale: 0,
+  resignedFemale: 0,
+  interviewedMale: 0,
+  interviewedFemale: 0
 };
 
 export const useData = (program: 'GIP' | 'TUPAD') => {

@@ -54,6 +54,7 @@ const ReportsTab: React.FC<ReportsTabProps> = ({ activeProgram }) => {
     completed: statistics.completed,
     rejected: statistics.rejected,
     resigned: statistics.resigned,
+    interviewed: statistics.interviewed,
     barangaysCovered: statistics.barangaysCovered,
     maleCount: statistics.maleCount,
     femaleCount: statistics.femaleCount
@@ -65,6 +66,7 @@ const ReportsTab: React.FC<ReportsTabProps> = ({ activeProgram }) => {
     completed: 0,
     rejected: 0,
     resigned: 0,
+    interviewed: 0,
     barangaysCovered: 0,
     maleCount: 0,
     femaleCount: 0

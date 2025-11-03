@@ -112,12 +112,12 @@ const StatsGrid: React.FC<StatsGridProps> = ({ activeProgram }) => {
     },
     {
       title: 'INTERVIEWED',
-      value: statistics?.barangaysCovered?.toString() ?? '0',
-      male: '0',
-      female: '0',
-      icon: MapPin,
-      bgColor: 'bg-red-600',
-      iconBg: 'bg-red-700'
+      value: statistics?.interviewed?.toString() ?? '0',
+      male: statistics?.interviewedMale?.toString() ?? '0',
+      female: statistics?.interviewedFemale?.toString() ?? '0',
+      icon: UserCheck,
+      bgColor: 'bg-purple-600',
+      iconBg: 'bg-purple-700'
     }
   ];
 

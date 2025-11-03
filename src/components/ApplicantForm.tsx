@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { X } from "lucide-react";
 import { Applicant, calculateAge } from "../utils/dataService.ts";
 import { COLLEGE_COURSES, TECHNICAL_VOCATIONAL_COURSES } from "../utils/courses.ts";
-import Swal from "sweetalert2";
+import { truncateFileName, downloadFile, formatContactNumber } from "../utils/formUtils.ts";
+import { showCancelConfirmation } from "../utils/validationUtils.ts";
 
 interface ApplicantFormProps {
   showModal: boolean;
@@ -16,22 +17,6 @@ interface ApplicantFormProps {
   onSubmit: (e: React.FormEvent) => void;
 }
 
-const downloadResume = (fileName: string, fileData: string) => {
-  const link = document.createElement('a');
-  link.href = fileData;
-  link.download = fileName;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
-
-const truncateFileName = (fileName: string, maxLength: number = 15) => {
-  if (fileName.length <= maxLength) return fileName;
-  const extension = fileName.split('.').pop();
-  const nameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
-  const truncatedName = nameWithoutExtension.substring(0, maxLength - 3 - (extension?.length || 0));
-  return `${truncatedName}...${extension}`;
-};
 
 const ApplicantForm: React.FC<ApplicantFormProps> = ({
   showModal,
@@ -64,29 +49,8 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
 
   const handleCancel = async () => {
     const hasData = Object.values(formData).some(val => val !== '' && val !== null);
-
-    if (hasData) {
-      const result = await Swal.fire({
-        title: "Discard Changes?",
-        text: "You have unsaved data. Are you sure you want to cancel?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Confirm",
-        cancelButtonText: "Cancel",
-        reverseButtons: true,
-        customClass: {
-          popup: "rounded-2xl shadow-lg",
-          confirmButton: "px-4 py-2 rounded-lg",
-          cancelButton: "px-4 py-2 rounded-lg"
-        }
-      });
-
-      if (result.isConfirmed) {
-        onClose();
-      }
-    } else {
+    const shouldClose = await showCancelConfirmation(hasData);
+    if (shouldClose) {
       onClose();
     }
   };
@@ -213,7 +177,7 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
                     const fileName = formData.resumeFileName || editingApplicant?.resumeFileName;
                     const fileData = formData.resumeFileData || editingApplicant?.resumeFileData;
                     if (fileName && fileData) {
-                      downloadResume(fileName, fileData);
+                      downloadFile(fileName, fileData);
                     }
                   }}
                   className="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium truncate max-w-[150px] text-left"
@@ -366,24 +330,8 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
               type="text"
               value={formData.contactNumber}
               onChange={(e) => {
-                let value = e.target.value.replace(/[^0-9]/g, '');
-
-                if (value.length > 11) {
-                  value = value.slice(0, 11);
-                }
-
-                if (value.length > 0) {
-                  let formatted = value;
-                  if (value.length > 4) {
-                    formatted = value.slice(0, 4) + '-' + value.slice(4);
-                  }
-                  if (value.length > 7) {
-                    formatted = value.slice(0, 4) + '-' + value.slice(4, 7) + '-' + value.slice(7);
-                  }
-                  onInputChange('contactNumber', formatted);
-                } else {
-                  onInputChange('contactNumber', value);
-                }
+                const formatted = formatContactNumber(e.target.value);
+                onInputChange('contactNumber', formatted);
               }}
               pattern="09[0-9]{2}-[0-9]{3}-[0-9]{4}"
               title="Contact number must start with 09 and follow format: 09XX-XXX-XXXX"
