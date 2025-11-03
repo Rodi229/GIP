@@ -5,7 +5,7 @@ import Header from './components/Header';
 import Navigation from './components/Navigation';
 import DashboardTab from './components/DashboardTab';
 import ApplicantsTab from './components/ApplicantsTab';
-import ReportsTab from './components/ReportsTab';
+import ReportsTab from './components/Reports/ReportsTab';
 
 function App() {
   const { logout, user } = useAuthContext();
