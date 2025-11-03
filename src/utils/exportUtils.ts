@@ -18,6 +18,7 @@ export interface StatsData {
   completed: number;
   rejected: number;
   resigned: number;
+  interviewed: number;
   barangaysCovered: number;
   maleCount: number;
   femaleCount: number;

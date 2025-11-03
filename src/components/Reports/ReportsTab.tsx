@@ -1,0 +1,153 @@
+import React, { useState } from 'react';
+import { Printer, FileText, Download, Calendar, BarChart3, PieChart } from 'lucide-react';
+import { getCurrentUser } from '../../utils/auth';
+import { exportStatsToCSV, exportStatsToPDF, printStats } from '../../utils/exportUtils';
+import { useReportData } from '../../hooks/useReportData';
+import SummaryReport from './sections/SummaryReport';
+import BarangayReport from './sections/BarangayReport';
+import StatusReport from './sections/StatusReport';
+import GenderReport from './sections/GenderReport';
+import ReportDetailsModal from './modals/ReportDetailsModal';
+
+const ReportsTab = ({ activeProgram }: { activeProgram: 'GIP' | 'TUPAD' }) => {
+  const currentUser = getCurrentUser();
+  const isAdmin = currentUser?.role === 'admin';
+  const [selectedYear, setSelectedYear] = useState<number | undefined>();
+  const [selectedReportType, setSelectedReportType] = useState('summary');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [entriesPerPage, setEntriesPerPage] = useState(10);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDetailData, setSelectedDetailData] = useState<any[]>([]);
+  const { availableYears, statistics, barangayStats, statusStats, genderStats, loading } = useReportData(activeProgram, selectedYear);
+
+  const handleRowClick = (type: string, filterValue?: string) => {
+    setSelectedDetailData([]);
+    setShowModal(true);
+  };
+
+  const handleExport = (type: 'pdf' | 'csv') => {
+    if (!statistics) return;
+    type === 'pdf' ? exportStatsToPDF(statistics, activeProgram) : exportStatsToCSV(statistics, activeProgram);
+  };
+
+  const handlePrint = () => statistics && printStats(statistics, activeProgram);
+
+  const renderReport = () => {
+    switch (selectedReportType) {
+      case 'barangay':
+        return (
+          <BarangayReport
+            data={barangayStats}
+            entriesPerPage={entriesPerPage}
+            currentPage={currentPage}
+            setEntriesPerPage={setEntriesPerPage}
+            setCurrentPage={setCurrentPage}
+            onRowClick={(v) => handleRowClick('barangay', v)}
+            programName={activeProgram}
+          />
+        );
+      case 'status':
+        return (
+          <StatusReport
+            data={statusStats}
+            entriesPerPage={entriesPerPage}
+            currentPage={currentPage}
+            setEntriesPerPage={setEntriesPerPage}
+            setCurrentPage={setCurrentPage}
+            onRowClick={(v) => handleRowClick('status', v)}
+            programName={activeProgram}
+          />
+        );
+      case 'gender':
+        return <GenderReport data={genderStats} programName={activeProgram} />;
+      default:
+        return <SummaryReport data={statistics} onRowClick={() => handleRowClick('summary')} programName={activeProgram} />;
+    }
+  };
+
+  const reportTypes = [
+    { id: 'summary', label: 'Summary Report', icon: BarChart3, color: 'border-blue-500 bg-blue-50 text-blue-600' },
+    { id: 'barangay', label: 'By Barangay', icon: PieChart, color: 'border-green-500 bg-green-50 text-green-600' },
+    { id: 'status', label: 'By Status', icon: BarChart3, color: 'border-purple-500 bg-purple-50 text-purple-600' },
+    { id: 'gender', label: 'By Gender', icon: PieChart, color: 'border-pink-500 bg-pink-50 text-pink-600' },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">{activeProgram} REPORTS</h1>
+          <p className="text-gray-600">Generate and view comprehensive reports</p>
+        </div>
+        <div className="flex space-x-2 items-center">
+          <div className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm">
+            <Calendar className="w-4 h-4 text-gray-500" />
+            <select
+              value={selectedYear || ''}
+              onChange={(e) => setSelectedYear(e.target.value ? Number(e.target.value) : undefined)}
+              className="text-sm border-0 focus:ring-0 bg-transparent cursor-pointer"
+            >
+              <option value="">All Years</option>
+              {availableYears.map((y) => (
+                <option key={y} value={y}>{y}</option>
+              ))}
+            </select>
+          </div>
+          <button onClick={handlePrint} className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition">
+            <Printer className="w-4 h-4" /><span>Print</span>
+          </button>
+          {isAdmin && (
+            <>
+              <button onClick={() => handleExport('csv')} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition">
+                <Download className="w-4 h-4" /><span>CSV</span>
+              </button>
+              <button onClick={() => handleExport('pdf')} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition">
+                <FileText className="w-4 h-4" /><span>PDF</span>
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+
+      <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Report Type</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {reportTypes.map((type) => {
+            const Icon = type.icon;
+            return (
+              <button
+                key={type.id}
+                onClick={() => setSelectedReportType(type.id)}
+                className={`p-4 rounded-lg border-2 transition-all duration-200 ${
+                  selectedReportType === type.id
+                    ? type.color
+                    : 'border-gray-200 bg-white hover:border-gray-300'
+                }`}
+              >
+                <div className="flex flex-col items-center space-y-2">
+                  <Icon className={`w-8 h-8 ${
+                    selectedReportType === type.id
+                      ? type.color.split(' ')[2]
+                      : 'text-gray-400'
+                  }`} />
+                  <span className={`text-sm font-medium ${
+                    selectedReportType === type.id ? 'text-gray-900' : 'text-gray-600'
+                  }`}>
+                    {type.label}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {renderReport()}
+      {showModal && (
+        <ReportDetailsModal title="Detailed Report" data={selectedDetailData} onClose={() => setShowModal(false)} />
+      )}
+    </div>
+  );
+};
+
+export default ReportsTab;
