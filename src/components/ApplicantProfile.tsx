@@ -172,7 +172,7 @@ const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose 
                   </div>
                   <div className="mt-3">
                     <p className="text-xs text-gray-600 font-semibold mb-1">E-mail Address:</p>
-                    <p className="font-medium text-gray-900">{(applicant.email || '-').toLowerCase()}</p>
+                    <p className="font-medium text-gray-900">{(applicant.email || '-').toUpperCase()}</p>
                   </div>
                 </div>
               </div>
