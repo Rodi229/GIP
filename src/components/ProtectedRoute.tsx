@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '../hooks/useAuth';
+import { useAuthContext } from '../contexts/AuthContext';
 import LoginPage from './LoginPage';
 
 interface ProtectedRouteProps {
@@ -7,7 +7,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated, login, isLoading } = useAuth();
+  const { isAuthenticated, login } = useAuthContext();
 
   if (!isAuthenticated) {
     return <LoginPage onLogin={login} />;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
 import { Applicant, calculateAge } from "../utils/dataService.ts";
-import { COLLEGE_COURSES, TECHNICAL_VOCATIONAL_COURSES } from "../utils/courses.ts";
+import { COLLEGE_COURSES, TECHNICAL_VOCATIONAL_COURSES, ALS_SECONDARY_COURSES, COLLEGE_UNDERGRADUATE_COURSES } from "../utils/courses.ts";
 import Swal from "sweetalert2";
 
 interface ApplicantFormProps {
@@ -56,11 +56,26 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
   const programName = activeProgram === 'GIP' ? 'GIP' : 'TUPAD';
 
   const isCourseFieldActive = formData.educationalAttainment === 'COLLEGE GRADUATE' ||
-    formData.educationalAttainment === 'TECHNICAL/VOCATIONAL COURSE GRADUATE';
+    formData.educationalAttainment === 'TECHNICAL/VOCATIONAL COURSE GRADUATE' ||
+    formData.educationalAttainment === 'ALS SECONDARY GRADUATE' ||
+    formData.educationalAttainment === 'COLLEGE UNDERGRADUATE';
 
-  const courseOptions = formData.educationalAttainment === 'COLLEGE GRADUATE'
-    ? COLLEGE_COURSES
-    : TECHNICAL_VOCATIONAL_COURSES;
+  const getCourseOptions = () => {
+    switch (formData.educationalAttainment) {
+      case 'COLLEGE GRADUATE':
+        return COLLEGE_COURSES;
+      case 'TECHNICAL/VOCATIONAL COURSE GRADUATE':
+        return TECHNICAL_VOCATIONAL_COURSES;
+      case 'ALS SECONDARY GRADUATE':
+        return ALS_SECONDARY_COURSES;
+      case 'COLLEGE UNDERGRADUATE':
+        return COLLEGE_UNDERGRADUATE_COURSES;
+      default:
+        return [];
+    }
+  };
+
+  const courseOptions = getCourseOptions();
 
   const handleCancel = async () => {
     const hasData = Object.values(formData).some(val => val !== '' && val !== null);
@@ -148,33 +163,19 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
                   />
                 </label>
                 {(formData.photoFileName || editingApplicant?.photoFileName) ? (
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="text-sm text-green-600 font-medium cursor-pointer hover:text-green-700 hover:underline"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (formData.photoFileData || editingApplicant?.photoFileData) {
-                          setSelectedImage(formData.photoFileData || editingApplicant?.photoFileData || null);
-                          setShowImageModal(true);
-                        }
-                      }}
-                      title={formData.photoFileName || editingApplicant?.photoFileName}
-                    >
-                      {truncateFileName(formData.photoFileName || editingApplicant?.photoFileName || '')}
-                    </span>
-                    {(formData.photoFileData || editingApplicant?.photoFileData) && (
-                      <img
-                        src={formData.photoFileData || editingApplicant?.photoFileData}
-                        alt="Preview"
-                        className="w-8 h-8 object-cover rounded border cursor-pointer hover:opacity-80 transition"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setSelectedImage(formData.photoFileData || editingApplicant?.photoFileData || null);
-                          setShowImageModal(true);
-                        }}
-                      />
-                    )}
-                  </div>
+                  <span
+                    className="text-sm text-green-600 font-medium cursor-pointer hover:text-green-700 hover:underline"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (formData.photoFileData || editingApplicant?.photoFileData) {
+                        setSelectedImage(formData.photoFileData || editingApplicant?.photoFileData || null);
+                        setShowImageModal(true);
+                      }
+                    }}
+                    title={formData.photoFileName || editingApplicant?.photoFileName}
+                  >
+                    {truncateFileName(formData.photoFileName || editingApplicant?.photoFileName || '')}
+                  </span>
                 ) : (
                   <span className="text-gray-500 text-sm">No file chosen</span>
                 )}
@@ -304,11 +305,11 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-bold mb-1 uppercase">Gender *</label>
+            <label className="block text-sm font-bold mb-2 uppercase">Gender *</label>
             <select
               value={formData.gender}
               onChange={(e) => onInputChange('gender', e.target.value)}
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-lg px-3 py-3"
             >
               <option value="MALE">MALE</option>
               <option value="FEMALE">FEMALE</option>
@@ -331,12 +332,12 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
           )}
 
           <div>
-            <label className="block text-sm font-bold mb-1 uppercase">Barangay *</label>
+            <label className="block text-sm font-bold mb-2 uppercase">Barangay *</label>
             <select
               value={formData.barangay}
               onChange={(e) => onInputChange('barangay', e.target.value)}
               required
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-lg px-3 py-3"
             >
               <option value="">SELECT BARANGAY</option>
               <option>APLAYA</option>
@@ -426,12 +427,12 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
 
           {activeProgram === 'GIP' && (
             <div>
-              <label className="block text-sm font-bold mb-1 uppercase">Civil Status *</label>
+              <label className="block text-sm font-bold mb-2 uppercase">Civil Status *</label>
               <select
                 value={formData.civilStats || ''}
                 onChange={(e) => onInputChange('civilStats', e.target.value)}
                 required
-                className="w-full border rounded-lg px-3 py-2"
+                className="w-full border rounded-lg px-3 py-3"
               >
                 <option value="">SELECT CIVIL STATUS</option>
                 <option>SINGLE</option>
@@ -459,12 +460,12 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
           {activeProgram === 'TUPAD' && (
             <>
               <div>
-                <label className="block text-sm font-bold mb-1 uppercase">Type of ID Submitted *</label>
+                <label className="block text-sm font-bold mb-2 uppercase">Type of ID Submitted *</label>
                 <select
                   value={formData.idType}
                   onChange={(e) => onInputChange('idType', e.target.value)}
                   required
-                  className="w-full border rounded-lg px-3 py-2"
+                  className="w-full border rounded-lg px-3 py-3"
                 >
                   <option value="">SELECT ID TYPE</option>
                   <option>PHILSYS ID</option>
@@ -503,11 +504,11 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
               </div>
 
               <div>
-                <label className="block text-sm font-bold mb-1 uppercase">Civil Status</label>
+                <label className="block text-sm font-bold mb-2 uppercase">Civil Status</label>
                 <select
                   value={formData.civilStatus}
                   onChange={(e) => onInputChange('civilStatus', e.target.value)}
-                  className="w-full border rounded-lg px-3 py-2"
+                  className="w-full border rounded-lg px-3 py-3"
                 >
                   <option value="">SELECT CIVIL STATUS</option>
                   <option>SINGLE</option>
@@ -556,7 +557,7 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
           {activeProgram === 'GIP' && (
             <>
               <div>
-                <label className="block text-sm font-bold mb-1 uppercase">Educational Attainment *</label>
+                <label className="block text-sm font-bold mb-2 uppercase">Educational Attainment *</label>
                 <select
                   value={formData.educationalAttainment}
                   onChange={(e) => {
@@ -566,7 +567,7 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
                     setShowCustomCourse(false);
                   }}
                   required
-                  className="w-full border rounded-lg px-3 py-2"
+                  className="w-full border rounded-lg px-3 py-3"
                 >
                   <option value="">Select</option>
                   <option>JUNIOR HIGH SCHOOL GRADUATE</option>
@@ -581,8 +582,8 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
 
               {isCourseFieldActive && (
               <div>
-                <label className="block text-sm font-bold mb-1 uppercase">
-                  Course * {formData.educationalAttainment === 'COLLEGE GRADUATE' ? '(College)' : '(Technical/Vocational)'}
+                <label className="block text-sm font-bold mb-2 uppercase">
+                  Course *
                 </label>
 
                 {!showCustomCourse ? (
@@ -597,7 +598,7 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
                       }
                     }}
                     required
-                    className="w-full border rounded-lg px-3 py-2"
+                    className="w-full border rounded-lg px-3 py-3"
                   >
                     <option value="">SELECT COURSE</option>
                     <option value="OTHER">OTHER (Type manually)</option>
@@ -644,11 +645,11 @@ const ApplicantForm: React.FC<ApplicantFormProps> = ({
           )}
 
           <div>
-            <label className="block text-sm font-bold mb-1 uppercase">Status</label>
+            <label className="block text-sm font-bold mb-2 uppercase">Status</label>
             <select
               value={formData.status}
               onChange={(e) => onInputChange('status', e.target.value)}
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-lg px-3 py-3"
             >
               <option value="PENDING">PENDING</option>
               <option value="APPROVED">APPROVED</option>
