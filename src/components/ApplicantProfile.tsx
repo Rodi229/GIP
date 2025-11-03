@@ -84,7 +84,7 @@ const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose 
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="bg-red-700 text-white px-6 py-4 flex items-center justify-between sticky top-0 z-10">
-          <h2 className="text-xl font-bold">DOLE-GIP Application Form</h2>
+          <h2 className="text-xl font-bold">APPLICANT PROFILE</h2>
           <div className="flex items-center space-x-3">
             <button
               onClick={handleExportToExcel}
@@ -99,74 +99,100 @@ const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose 
           </div>
         </div>
 
-        <div className="p-6 bg-white">
-          <div className="border-2 border-black">
-            <div className="border-b-2 border-black p-4 text-center">
-              <p className="font-bold text-sm mb-1">DOLE REGIONAL OFFICE NO. ____</p>
-              <p className="font-bold text-sm mb-1">GOVERNMENT INTERNSHIP PROGRAM (GIP)</p>
-              <p className="font-bold text-sm">APPLICATION FORM</p>
+        {/* Body */}
+        <div className="p-8 bg-gradient-to-br from-gray-50 to-white">
+          <div className="border-4 border-gray-800 rounded-lg p-8 bg-white shadow-xl">
+            
+            {/* Logos + Title */}
+            <div className="flex justify-between items-center mb-8">
+              {/* Left Logo */}
+              <img
+                src="src/assets/DOLElogo.png"
+                alt="DOLE Logo"
+                className="w-20 h-20 object-contain"
+              />
+
+              {/* Title Section */}
+              <div className="text-center flex-1">
+                <h3 className="font-bold text-xl text-gray-800 mb-1">DOLE REGIONAL OFFICE NO. ____</h3>
+                <h4 className="font-bold text-lg text-red-700">GOVERNMENT INTERNSHIP PROGRAM (GIP)</h4>
+                <h4 className="font-bold text-md text-gray-700 underline">APPLICATION FORM</h4>
+              </div>
+
+              {/* Right Logo */}
+              <img
+                src="src/assets/GIPLogo.png"
+                alt="GIP Logo"
+                className="w-20 h-20 object-contain"
+              />
             </div>
+
 
             <div className="border-b-2 border-black p-3">
               <p className="font-bold text-xs mb-1">INSTRUCTION TO APPLICANTS:</p>
               <p className="text-xs">Please fill out all the required information in this form and attach additional documents, if necessary.</p>
             </div>
 
-            <div className="grid grid-cols-3 gap-0">
-              <div className="col-span-2 border-r-2 border-black border-b-2 p-3">
+            <div className="grid grid-cols-[2fr_1fr] border-t-2 border-b-2 border-black">
+              {/* LEFT SIDE: NAME + ADDRESS */}
+              <div className="border-r-2 border-black p-3">
+                {/* 1. NAME OF APPLICANT */}
                 <p className="font-bold text-xs mb-2">1. NAME OF APPLICANT:</p>
-                <div className="border-b border-black mb-2 pb-1">
-                  <div className="grid grid-cols-3 gap-2 text-xs font-semibold">
+                <div className="border-b border-black mb-3 pb-1">
+                  <div className="grid grid-cols-3 text-xs font-semibold">
                     <div>Family Name</div>
                     <div>First Name</div>
                     <div>Middle Name</div>
                   </div>
-                  <div className="grid grid-cols-3 gap-2 text-xs mt-1">
+                  <div className="grid grid-cols-3 text-xs mt-1">
                     <div>{applicant.lastName.toUpperCase()}</div>
                     <div>{applicant.firstName.toUpperCase()}</div>
                     <div>{applicant.middleName ? applicant.middleName.toUpperCase() : '-'}</div>
                   </div>
                 </div>
+
+                {/* 2. RESIDENTIAL ADDRESS */}
+                <p className="font-bold text-xs mb-2">2. RESIDENTIAL ADDRESS:</p>
+                <div className="border-b border-black mb-2 pb-2 text-xs">
+                  <p>{applicant.barangay.toUpperCase()}</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="border-b border-black pb-1">
+                    <p className="font-semibold">Telephone No.:</p>
+                    <p>{applicant.telephoneNumber || 'N/A'}</p>
+                  </div>
+                  <div className="border-b border-black pb-1">
+                    <p className="font-semibold">Mobile No.:</p>
+                    <p>{applicant.contactNumber}</p>
+                  </div>
+                </div>
+
+                <div className="mt-2 text-xs border-b border-black pb-1">
+                  <p className="font-semibold">E-mail Address:</p>
+                  <p>{(applicant.email || '-').toUpperCase()}</p>
+                </div>
               </div>
 
-              <div className="border-b-2 border-black p-3 flex flex-col items-center justify-center">
-                <p className="text-xs font-bold text-center mb-2">ATTACH 2x2 PHOTO WITH NAME AND SIGNATURE TAKEN WITHIN THE LAST THREE (3) MONTHS</p>
-                {applicant.photoFileData && (
+             {/* RIGHT SIDE: PHOTO */}
+              <div className="flex flex-col items-center justify-center text-center p-3">
+                {applicant.photoFileData ? (
                   <img
                     src={applicant.photoFileData}
                     alt="Applicant Photo"
-                    className="w-16 h-16 object-cover border border-gray-400 cursor-pointer hover:opacity-80 transition"
+                    className="w-[2in] h-[2in] object-cover border border-gray-400 cursor-pointer hover:opacity-80 transition"
                     onClick={() => setShowImageModal(true)}
                   />
-                )}
-                {!applicant.photoFileData && (
-                  <div className="w-16 h-16 bg-gray-200 border border-gray-400 flex items-center justify-center text-xs text-gray-500">
-                    No photo
+                ) : (
+                  <div className="w-[2in] h-[2in] flex flex-col items-center justify-center bg-gray-200 border border-gray-400 p-2">
+                    <p className="text-xs font-bold text-center leading-tight">
+                      ATTACH 2x2 PHOTO WITH NAME AND SIGNATURE TAKEN WITHIN THE LAST THREE (3) MONTHS
+                    </p>
                   </div>
                 )}
               </div>
             </div>
 
-            <div className="border-b-2 border-black p-3">
-              <p className="font-bold text-xs mb-2">2. RESIDENTIAL ADDRESS:</p>
-              <div className="border-b border-black mb-2 pb-2 text-xs">
-                <p>{applicant.barangay.toUpperCase()}</p>
-              </div>
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="border-b border-black pb-1">
-                  <p className="font-semibold">Telephone No.:</p>
-                  <p>{applicant.telephoneNumber || '-'}</p>
-                </div>
-                <div className="border-b border-black pb-1">
-                  <p className="font-semibold">Mobile No.:</p>
-                  <p>{applicant.contactNumber}</p>
-                </div>
-              </div>
-              <div className="mt-2 text-xs border-b border-black pb-1">
-                <p className="font-semibold">E-mail Address:</p>
-                <p>{(applicant.email || '-').toUpperCase()}</p>
-              </div>
-            </div>
 
             <div className="border-b-2 border-black p-3">
               <p className="font-bold text-xs mb-1">3. PLACE OF BIRTH (city/province)</p>
