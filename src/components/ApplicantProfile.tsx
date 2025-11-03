@@ -138,14 +138,14 @@ const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose 
             </div>
 
             <div className="space-y-6">
-              <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-300">
-                <p className="font-semibold text-sm mb-3 text-gray-800">1. NAME OF APPLICANT:</p>
-                <div className="grid grid-cols-3 gap-4 bg-white p-4 rounded border-2 border-gray-400 shadow-sm">
-                  <div>
+              <div className="border-2 border-gray-800 p-4">
+                <p className="font-bold text-sm mb-3 text-gray-800">1. NAME OF APPLICANT:</p>
+                <div className="grid grid-cols-3 gap-4 border-t-2 border-gray-800 pt-3">
+                  <div className="border-r-2 border-gray-800 pr-2">
                     <p className="text-xs text-gray-600 font-semibold mb-1">Family Name</p>
                     <p className="font-bold text-gray-900">{applicant.lastName.toUpperCase()}</p>
                   </div>
-                  <div>
+                  <div className="border-r-2 border-gray-800 pr-2">
                     <p className="text-xs text-gray-600 font-semibold mb-1">First Name</p>
                     <p className="font-bold text-gray-900">{applicant.firstName.toUpperCase()}</p>
                   </div>
@@ -156,115 +156,259 @@ const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onClose 
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-300">
-                <p className="font-semibold text-sm mb-3 text-gray-800">2. RESIDENTIAL ADDRESS:</p>
-                <div className="bg-white p-4 rounded border-2 border-gray-400 shadow-sm">
-                  <p className="font-medium text-gray-900 mb-3">{applicant.barangay.toUpperCase()}</p>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="col-span-2 border-2 border-gray-800 p-4">
+                  <p className="font-bold text-sm mb-3 text-gray-800">2. RESIDENTIAL ADDRESS:</p>
+                  <div className="border-t-2 border-gray-800 pt-3 space-y-3">
+                    <div className="min-h-12 border-b border-gray-400">
+                      <p className="font-medium text-gray-900">{applicant.barangay.toUpperCase()}</p>
+                    </div>
+                    <div className="border-b border-gray-400 pb-2">
                       <p className="text-xs text-gray-600 font-semibold mb-1">Telephone No.:</p>
                       <p className="font-medium text-gray-900">{applicant.telephoneNumber || '-'}</p>
                     </div>
-                    <div>
-                      <p className="text-xs text-gray-600 font-semibold mb-1">Mobile Number:</p>
+                    <div className="border-b border-gray-400 pb-2">
+                      <p className="text-xs text-gray-600 font-semibold mb-1">Mobile No.:</p>
                       <p className="font-medium text-gray-900">{applicant.contactNumber}</p>
                     </div>
+                    <div>
+                      <p className="text-xs text-gray-600 font-semibold mb-1">E-mail Address:</p>
+                      <p className="font-medium text-gray-900">{(applicant.email || '-').toUpperCase()}</p>
+                    </div>
                   </div>
-                  <div className="mt-3">
-                    <p className="text-xs text-gray-600 font-semibold mb-1">E-mail Address:</p>
-                    <p className="font-medium text-gray-900">{(applicant.email || '-').toUpperCase()}</p>
+                </div>
+                <div className="border-2 border-gray-800 p-4 flex items-center justify-center">
+                  <div className="text-center">
+                    <p className="text-xs font-semibold text-gray-800 mb-2">ATTACH 2x2 PHOTO</p>
+                    <p className="text-xs font-semibold text-gray-800 mb-2">WITH NAME AND</p>
+                    <p className="text-xs font-semibold text-gray-800 mb-3">SIGNATURE TAKEN WITHIN</p>
+                    <p className="text-xs font-semibold text-gray-800 mb-2">THE LAST THREE (3)</p>
+                    <p className="text-xs font-semibold text-gray-800">MONTHS</p>
+                    {applicant.photoFileData && (
+                      <img
+                        src={applicant.photoFileData}
+                        alt="Applicant Photo"
+                        className="w-20 h-20 object-cover mt-3 border border-gray-400 cursor-pointer hover:opacity-80 transition"
+                        onClick={() => setShowImageModal(true)}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-300">
-                <p className="font-semibold text-sm mb-3 text-gray-800">3. PLACE OF BIRTH (city/province)</p>
-                <div className="bg-white p-4 rounded border-2 border-gray-400 shadow-sm">
+              <div className="border-2 border-gray-800 p-4">
+                <p className="font-bold text-sm mb-3 text-gray-800">3. PLACE OF BIRTH (city/province)</p>
+                <div className="border-t-2 border-gray-800 pt-3 min-h-10">
                   <p className="font-medium text-gray-900">{applicant.placeOfBirth ? applicant.placeOfBirth.toUpperCase() : '-'}</p>
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-300">
-                <p className="font-semibold text-sm mb-3 text-gray-800">4. DATE OF BIRTH (mm/dd/yyyy)</p>
-                <div className="bg-white p-4 rounded border-2 border-gray-400 shadow-sm">
-                  <p className="font-medium text-gray-900">{applicant.birthDate}</p>
+              <div className="border-2 border-gray-800 p-4">
+                <p className="font-bold text-sm mb-3 text-gray-800">4. DATE OF BIRTH (mm/dd/yyyy)</p>
+                <div className="border-t-2 border-gray-800 pt-3 flex gap-2 items-center">
+                  <input type="text" className="border border-gray-400 w-16 text-center" placeholder="mm" value={applicant.birthDate?.split('/')[0] || ''} readOnly />
+                  <span>/</span>
+                  <input type="text" className="border border-gray-400 w-16 text-center" placeholder="dd" value={applicant.birthDate?.split('/')[1] || ''} readOnly />
+                  <span>/</span>
+                  <input type="text" className="border border-gray-400 w-24 text-center" placeholder="yyyy" value={applicant.birthDate?.split('/')[2] || ''} readOnly />
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-300">
-                <p className="font-semibold text-sm mb-3 text-gray-800">5. GENDER</p>
-                <div className="bg-white p-4 rounded border-2 border-gray-400 shadow-sm">
-                  <p className="font-medium text-gray-900">{applicant.gender === 'MALE' ? 'MALE' : 'FEMALE'}</p>
-                </div>
-              </div>
-
-              <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-300">
-                <p className="font-semibold text-sm mb-3 text-gray-800">6. CIVIL STATUS</p>
-                <div className="bg-white p-4 rounded border-2 border-gray-400 shadow-sm">
-                  <p className="font-medium text-gray-900">{applicant.civilStats ? applicant.civilStats.toUpperCase() : '-'}</p>
-                </div>
-              </div>
-
-              <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-300">
-                <p className="font-semibold text-sm mb-3 text-gray-800">7. EDUCATIONAL ATTAINMENT</p>
-                <div className="bg-white border-2 border-gray-400 rounded shadow-sm overflow-hidden">
-                  <div className="grid grid-cols-5 gap-4 p-4 bg-gray-100 font-semibold text-sm text-gray-800 border-b-2 border-gray-400">
-                    <div>NAME OF SCHOOL</div>
-                    <div className="col-span-2 text-center">INCLUSIVE DATES</div>
-                    <div>DEGREE OR DIPLOMA</div>
-                    <div>COURSE</div>
-                  </div>
-                  <div className="grid grid-cols-5 gap-4 p-4 border-b border-gray-300">
-                    <div className="font-medium text-gray-900">{applicant.school ? applicant.school.toUpperCase() : '-'}</div>
-                    <div className="text-center text-xs text-gray-600">From: -</div>
-                    <div className="text-center text-xs text-gray-600">To: -</div>
-                    <div className="font-medium text-gray-900">{applicant.educationalAttainment.toUpperCase()}</div>
-                    <div className="font-medium text-gray-900">{applicant.course ? applicant.course.toUpperCase() : '-'}</div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="border-2 border-gray-800 p-4">
+                  <p className="font-bold text-sm mb-3 text-gray-800">5. GENDER</p>
+                  <div className="border-t-2 border-gray-800 pt-3 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" checked={applicant.gender === 'MALE'} readOnly />
+                      <label className="text-sm font-medium">Male</label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" checked={applicant.gender === 'FEMALE'} readOnly />
+                      <label className="text-sm font-medium">Female</label>
+                    </div>
                   </div>
                 </div>
+                <div className="border-2 border-gray-800 p-4">
+                  <p className="font-bold text-sm mb-3 text-gray-800">6. CIVIL STATUS</p>
+                  <div className="border-t-2 border-gray-800 pt-3 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" checked={applicant.civilStats === 'SINGLE'} readOnly />
+                      <label className="text-sm font-medium">Single</label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" checked={applicant.civilStats === 'MARRIED'} readOnly />
+                      <label className="text-sm font-medium">Married</label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" checked={applicant.civilStats === 'WIDOW/WIDOWER'} readOnly />
+                      <label className="text-sm font-medium">Widow/Widower</label>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className="border-t-4 border-gray-800 pt-6 mt-8">
-                <p className="text-xs mb-4 text-gray-700 leading-relaxed bg-yellow-50 p-4 rounded border border-yellow-200">
-                  <span className="font-semibold text-yellow-900">CERTIFICATION:</span> I certify that all information given in this application are complete and accurate to the best of my knowledge. I
-                  acknowledge that I have completely read and understood the DOLE-GIP Guidelines as embodied in Administrative Order No. ___,
-                  Series of 2013.
+              <div className="border-2 border-gray-800 p-4">
+                <p className="font-bold text-sm mb-3 text-gray-800">7. EDUCATIONAL ATTAINMENT</p>
+                <div className="border-t-2 border-gray-800 pt-3 overflow-hidden">
+                  <table className="w-full border-collapse">
+                    <thead>
+                      <tr>
+                        <th className="border border-gray-800 p-2 text-left text-xs font-bold bg-gray-100">NAME OF SCHOOL</th>
+                        <th className="border border-gray-800 p-2 text-center text-xs font-bold bg-gray-100 col-span-2">INCLUSIVE DATES</th>
+                        <th className="border border-gray-800 p-2 text-left text-xs font-bold bg-gray-100">DEGREE OR DIPLOMA</th>
+                      </tr>
+                      <tr>
+                        <th className="border border-gray-800 p-2"></th>
+                        <th className="border border-gray-800 p-2 text-center text-xs font-semibold bg-gray-50">From</th>
+                        <th className="border border-gray-800 p-2 text-center text-xs font-semibold bg-gray-50">To</th>
+                        <th className="border border-gray-800 p-2"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="border border-gray-800 p-2 font-medium text-gray-900">{applicant.school ? applicant.school.toUpperCase() : '-'}</td>
+                        <td className="border border-gray-800 p-2 text-center text-xs text-gray-600">-</td>
+                        <td className="border border-gray-800 p-2 text-center text-xs text-gray-600">-</td>
+                        <td className="border border-gray-800 p-2">
+                          <div>
+                            <p className="text-xs font-semibold text-gray-600">Degree: {applicant.educationalAttainment.toUpperCase()}</p>
+                            <p className="text-xs font-semibold text-gray-600">Course: {applicant.course ? applicant.course.toUpperCase() : '-'}</p>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="border-2 border-gray-800 p-4">
+                <p className="font-bold text-sm mb-3 text-gray-800">8. DISADVANTAGED GROUP</p>
+                <div className="border-t-2 border-gray-800 pt-3 space-y-2">
+                  <div className="flex flex-wrap gap-4">
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" readOnly />
+                      <label className="text-sm font-medium">PWDs</label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" readOnly />
+                      <label className="text-sm font-medium">IPs</label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" readOnly />
+                      <label className="text-sm font-medium">Victims of Armed Conflict</label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" readOnly />
+                      <label className="text-sm font-medium">Rebel Returnee</label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" readOnly />
+                      <label className="text-sm font-medium">4Ps</label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" readOnly />
+                      <label className="text-sm font-medium">Others:</label>
+                      <input type="text" className="border border-gray-400 w-20 text-xs px-1" readOnly />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-2 border-gray-800 p-4 mt-8">
+                <p className="text-xs mb-4 text-gray-700 leading-relaxed">
+                  <span className="font-bold">CERTIFICATION:</span> Certify that all information provided in this application, including the attached documents, is complete and accurate to the best of my knowledge. I attest to the veracity of the attached requirements. I understand and agree that any misrepresentation in this document or its attachments may result in disqualification, cancellation of the service or contract, and the forfeiture of any refunds received or pay damages to DOLE or comply with any other sanctions in accordance with the law.
                 </p>
-                <div className="grid grid-cols-2 gap-6 bg-white p-4 rounded border-2 border-gray-400 shadow-sm">
+                <div className="grid grid-cols-2 gap-6 border-t-2 border-gray-800 pt-4">
                   <div>
-                    <p className="text-xs text-gray-600 font-semibold mb-2">DATE</p>
+                    <p className="text-xs text-gray-600 font-bold mb-2">Signature of Applicant</p>
+                    <div className="border-b-2 border-gray-800 h-12"></div>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-600 font-bold mb-2">Date Accomplished</p>
                     <p className="font-medium text-gray-900">{applicant.dateSubmitted}</p>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-600 font-semibold mb-2">SIGNATURE OF APPLICANT</p>
-                    <p className="font-medium text-gray-900">-</p>
-                  </div>
                 </div>
               </div>
 
-              <div className="border-t-4 border-gray-800 pt-6 mt-8 bg-blue-50 p-6 rounded-lg">
-                <p className="text-center font-semibold mb-4 text-lg text-blue-900">FOR DOLE-RO/FO Use only</p>
-                <p className="text-sm mb-3 font-semibold text-gray-800">Interviewed and validated by:</p>
-                <div className="bg-white p-4 rounded border-2 border-gray-400 mb-4 h-20"></div>
-                <div className="grid grid-cols-2 gap-6 bg-white p-4 rounded border-2 border-gray-400 mb-4">
-                  <div>
-                    <p className="text-xs text-gray-600 font-semibold">NAME and SIGNATURE/Position</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-600 font-semibold">DATE</p>
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <p className="text-sm font-semibold mb-2 text-gray-800">Documents Received:</p>
-                  <div className="space-y-1 text-sm text-gray-700">
-                    <p>☐ Transcript of Records</p>
-                    <p>☐ Barangay Certification</p>
+              <div className="border-2 border-gray-800 p-4 mt-8 bg-gray-50">
+                <p className="text-center font-bold text-sm mb-4 text-gray-900">FOR DOLE-RO/FO Use Only</p>
+
+                <div className="mb-4">
+                  <p className="text-sm font-bold mb-2 text-gray-800">Interviewed and validated by:</p>
+                  <div className="border-b-2 border-gray-800 h-16 mb-2"></div>
+                  <div className="grid grid-cols-2 gap-6 border-t-2 border-gray-800 pt-2 mt-2">
+                    <div>
+                      <p className="text-xs text-gray-600 font-bold">NAME and SIGNATURE/Position</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600 font-bold">DATE</p>
+                    </div>
                   </div>
                 </div>
-                <div className="mt-4">
-                  <p className="text-sm font-semibold mb-2 text-gray-800">Endorsed by:</p>
-                  <div className="border-b-2 border-gray-800 pb-8 mb-2"></div>
-                  <p className="text-xs text-center text-gray-600">District/Partylist Representative, where applicable</p>
+
+                <div className="mt-4 pt-4 border-t-2 border-gray-800">
+                  <p className="text-sm font-bold mb-3 text-gray-800">Documents Received:</p>
+                  <div className="grid grid-cols-2 gap-4 text-sm text-gray-700">
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <input type="checkbox" readOnly />
+                        <label className="text-xs font-medium">Birth certificate or equivalent</label>
+                      </div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <input type="checkbox" readOnly />
+                        <label className="text-xs font-medium">Transcript of Records</label>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <input type="checkbox" readOnly />
+                        <label className="text-xs font-medium">Barangay Certification</label>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <input type="checkbox" readOnly />
+                        <label className="text-xs font-medium">Form 137/138</label>
+                      </div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <input type="checkbox" readOnly />
+                        <label className="text-xs font-medium">Diploma</label>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <input type="checkbox" readOnly />
+                        <label className="text-xs font-medium">Certification from school or any docs equivalent hereto</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-3">
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" readOnly />
+                      <label className="text-xs font-medium">Others: <input type="text" className="border border-gray-400 w-40 text-xs px-1" readOnly /></label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-4 border-t-2 border-gray-800">
+                  <p className="text-xs font-bold text-gray-800 mb-2">DOLE REGIONAL OFFICE NO. _____</p>
+                </div>
+              </div>
+
+              <div className="border-2 border-gray-800 p-4 mt-8 bg-gray-50">
+                <p className="text-center font-bold text-sm mb-4 text-gray-900">In case of Emergency, please notify:</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs font-bold text-gray-800 mb-2">Name:</p>
+                    <div className="border-b-2 border-gray-800 h-8"></div>
+                    <p className="text-xs font-bold text-gray-800 mt-3 mb-2">Contact Details:</p>
+                    <div className="border-b-2 border-gray-800 h-8"></div>
+                    <p className="text-xs font-bold text-gray-800 mt-3 mb-2">Address:</p>
+                    <div className="border-b-2 border-gray-800 h-8"></div>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-gray-800 mb-2">GSIS Beneficiary (Parent/Child's Name)</p>
+                    <p className="text-xs font-bold text-gray-800 mb-2">Name of Beneficiary:</p>
+                    <div className="border-b-2 border-gray-800 h-8 mb-3"></div>
+                    <p className="text-xs font-bold text-gray-800 mb-2">Relationship:</p>
+                    <div className="border-b-2 border-gray-800 h-8"></div>
+                  </div>
                 </div>
               </div>
             </div>
